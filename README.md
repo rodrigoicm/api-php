@@ -1,3 +1,18 @@
+Para construir as imagens dos container:
+
+Navegar até a pasta raiz do projeto e rodar:
+
+`docker compose build --no-cache`
+
+Em seguida, inicie o Docker Compose no modo desanexado:
+
+`docker compose up --wait`
+
+Comando para gerar e rodar as migration:
+
+`bin/console doctrine:migrations:diff`
+`bin/console doctrine:migrations:migrate`
+
 <h1 align="center"><a href="https://api-platform.com"><img src="https://api-platform.com/images/logos/Logo_Circle%20webby%20text%20blue.png" alt="API Platform" width="250" height="250"></a></h1>
 
 API Platform is a next-generation web framework designed to easily create API-first projects without compromising extensibility
