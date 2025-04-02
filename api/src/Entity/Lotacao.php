@@ -2,26 +2,64 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use Doctrine\ORM\EntityManagerInterface;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Serializer\Filter\PropertyFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(),
+        new GetCollection(),
+        new Post(),
+        new Put(),
+        new Patch(),
+        new Delete(),
+        new GetCollection(
+            uriTemplate: '/servidores_lotados.{_format}',
+            normalizationContext: ['groups' => ['lotacao_read']]
+        )
+    ]
+)]
+#[ApiFilter(PropertyFilter::class)]
+#[ApiFilter(SearchFilter::class, properties: [
+    'unidade.id' => SearchFilter::STRATEGY_EXACT,
+])]
 class Lotacao
 {
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     #[ORM\Id]
-    #[ORM\Column(name: 'lot_id', type: 'integer', nullable: false)]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private ?int $lotId = null;
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
+    private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Pessoa::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'pes_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['lotacao_read'])]
     private Pessoa $pessoa;
 
     #[ORM\ManyToOne(targetEntity: Unidade::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'unid_id', referencedColumnName: 'unid_id', nullable: false)]
-    private int $unidId;
+    #[ORM\JoinColumn(name: 'unid_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['lotacao_read'])]
+    private Unidade $unidade;
 
     #[ORM\Column(name: 'lot_data_lotacao', type: 'date', nullable: false)]
     private \DateTimeInterface $lotDataLotacao;
@@ -34,12 +72,12 @@ class Lotacao
 
     public function getId(): ?int
     {
-        return $this->lotId;
+        return $this->id;
     }
 
-    public function setId(?int $lotId): self
+    public function setId(?int $id): self
     {
-        $this->lotId = $lotId;
+        $this->id = $id;
 
         return $this;
     }
@@ -62,20 +100,20 @@ class Lotacao
         return $this;
     }
 
-    /**
-     * Get the value of unidId
+     /**
+     * Get the value of unidade
      */
-    public function getUnidId(): int
+    public function getUnidade(): Unidade
     {
-        return $this->unidId;
+        return $this->unidade;
     }
 
     /**
-     * Set the value of unidId
+     * Set the value of unidade
      */
-    public function setUnidId(int $unidId): self
+    public function setUnidade(Unidade $unidade): self
     {
-        $this->unidId = $unidId;
+        $this->unidade = $unidade;
 
         return $this;
     }
@@ -133,4 +171,6 @@ class Lotacao
 
         return $this;
     }
+
+
 }

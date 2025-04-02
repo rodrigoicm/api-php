@@ -17,11 +17,11 @@ class PessoaEndereco
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Pessoa::class)]
-    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'pes_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'id', nullable: false)]
     private Pessoa $pessoa;
 
     #[ORM\ManyToOne(targetEntity: Endereco::class)]
-    #[ORM\JoinColumn(name: 'end_id', referencedColumnName: 'end_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'end_id', referencedColumnName: 'id', nullable: false)]
     private Endereco $endereco;
 
     /**

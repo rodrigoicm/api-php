@@ -16,11 +16,11 @@ class UnidadeEndereco
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Unidade::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'unid_id', referencedColumnName: 'unid_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'unid_id', referencedColumnName: 'id', nullable: false)]
     private Unidade $unidade;
 
     #[ORM\ManyToOne(targetEntity: Endereco::class)]
-    #[ORM\JoinColumn(name: 'end_id', referencedColumnName: 'end_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'end_id', referencedColumnName: 'id', nullable: false)]
     private Endereco $endereco;
 
     public function getId(): ?int

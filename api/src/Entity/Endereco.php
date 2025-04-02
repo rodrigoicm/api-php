@@ -4,36 +4,30 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
 class Endereco
 {
-    #[ORM\Column(name: 'end_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private ?int $endId = null;
+    private ?int $id = null;
 
     #[ORM\Column(name: 'end_tipo_logradouro', type: 'string', length: 50, nullable: false)]
-    #[Assert\NotBlank]
     private string $endTipoLogradouro;
 
     #[ORM\Column(name: 'end_logradouro', type: 'string', length: 200, nullable: false)]
-    #[Assert\NotBlank]
     private string $endLogradouro;
 
     #[ORM\Column(name: 'end_numero', type: 'integer', length: 50, nullable: false)]
-    #[Assert\NotBlank]
     private int $endNumero;
 
     #[ORM\Column(name: 'end_bairro', type: 'string', length: 100, nullable: false)]
-    #[Assert\NotBlank]
     private string $endBairro;
 
     #[ORM\ManyToOne(targetEntity: Cidade::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'cid_id', referencedColumnName: 'cid_id', nullable: false)]
-    #[Assert\NotNull]
+    #[ORM\JoinColumn(name: 'cid_id', referencedColumnName: 'id', nullable: false)]
     private ?Cidade $cidade = null;
 
     /**
@@ -41,15 +35,15 @@ class Endereco
      */
     public function getId(): ?int
     {
-        return $this->endId;
+        return $this->id;
     }
 
     /**
      * Set the value of endId
      */
-    public function setId(?int $endId): self
+    public function setId(?int $id): self
     {
-        $this->endId = $endId;
+        $this->id = $id;
 
         return $this;
     }

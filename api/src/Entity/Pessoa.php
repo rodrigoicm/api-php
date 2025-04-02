@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use App\Entity\FotoPessoa;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PessoaRepository;
 use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PessoaRepository::class)]
@@ -13,18 +15,17 @@ class Pessoa
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(name: 'pes_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 200, name: 'pes_nome')]
-    #[Assert\NotBlank]
+    #[Groups(['lotacao_read'])]
     private ?string $pesNome = null;
 
     #[ORM\Column(type: 'date', name: 'pes_data_nascimento')]
     private ?\DateTimeInterface $pesDataNascimento = null;
 
     #[ORM\Column(length: 9, name: 'pes_sexo')]
-    #[Assert\NotBlank]
     private ?string $pesSexo = null;
 
     #[ORM\Column(length: 200, name: 'pes_mae')]
@@ -33,10 +34,9 @@ class Pessoa
     #[ORM\Column(length: 200, name: 'pes_pai', nullable: true)]
     private ?string $pesPai = null;
 
-    // public function __construct()
-    // {
-    //     $this->pesDataNascimento = new \DateTime();
-    // }
+    #[ORM\ManyToOne(targetEntity: FotoPessoa::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'ft_id', referencedColumnName: 'id', nullable: true)]
+    private ?FotoPessoa $foto = null;
 
     public function getId(): ?int
     {
@@ -106,6 +106,35 @@ class Pessoa
     public function setPesPai(?string $pesPai): static
     {
         $this->pesPai = $pesPai;
+
+        return $this;
+    }
+
+    #[Groups(['lotacao_read'])]
+    public function getIdade(): ?int
+    {
+        $dataNascimento = $this->getPesDataNascimento();
+        if (!$dataNascimento) {
+            return null;
+        }
+        return (new \DateTime())->diff($dataNascimento)->y;
+    }
+
+    /**
+     * Get the value of foto
+     */
+    #[Groups(['lotacao_read'])]
+    public function getFoto(): ?FotoPessoa
+    {
+        return $this->foto;
+    }
+
+    /**
+     * Set the value of foto
+     */
+    public function setFoto(?FotoPessoa $foto): self
+    {
+        $this->foto = $foto;
 
         return $this;
     }

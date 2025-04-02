@@ -1,11 +1,15 @@
 api_platform:
     title: Hello API Platform
     version: 1.0.0
-    # Mercure integration, remove if unwanted
-    mercure:
-        include_type: true
-    # Good defaults for REST APIs
+    patch_formats:
+        json: ["application/json"]
+        jsonapi: ["application/vnd.api+json"]
+        html: ["text/html"]
     defaults:
         stateless: true
         cache_headers:
             vary: ["Content-Type", "Authorization", "Origin"]
+        pagination_client_items_per_page: true
+        pagination_items_per_page: 30
+        pagination_client_enabled: true
+        pagination_client_partial: true

@@ -11,9 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Cidade
 {
     #[ORM\Id]
-    #[ORM\Column(name: 'cid_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private ?int $cidId = null;
+    private ?int $id = null;
 
     #[ORM\Column(name: 'cid_nome', type: 'string', length: 200, nullable: false)]
     #[Assert\NotBlank]
@@ -28,15 +28,15 @@ class Cidade
      */
     public function getId(): ?int
     {
-        return $this->cidId;
+        return $this->id;
     }
 
     /**
      * Set the value of cidId
      */
-    public function setId(?int $cidId): self
+    public function setId(?int $id): self
     {
-        $this->cidId = $cidId;
+        $this->id = $id;
 
         return $this;
     }

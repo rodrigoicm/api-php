@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -16,7 +17,8 @@ class ServidorEfetivo
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Pessoa::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'pes_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'id', nullable: false)]
+    #[Groups(['lotacao_read'])]
     private Pessoa $pessoa;
 
     #[ORM\Column(name: 'se_matricula', type: 'string', length: 20, nullable: false)]
@@ -29,6 +31,7 @@ class ServidorEfetivo
      {
          return $this->id;
      }
+
 
      public function setId(?int $id): self
      {

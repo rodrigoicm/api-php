@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
@@ -11,11 +12,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Unidade
 {
     #[ORM\Id]
-    #[ORM\Column(name: 'unid_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
     #[ORM\Column(name: 'unid_nome', type: 'string', length: 200, nullable: false)]
+    #[Groups(['lotacao_read'])]
     private string $unidNome;
 
     #[ORM\Column(name: 'unid_sigla', type: 'string', length: 20, nullable: false)]

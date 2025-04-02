@@ -18,7 +18,7 @@ class ServidorTemporario
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Pessoa::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'pes_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'id', nullable: false)]
     private Pessoa $pessoa;
 
     #[ORM\Column(name: 'st_data_admissao', type: 'date', nullable: false)]

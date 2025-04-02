@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Controller\FotoUploadController;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,12 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class FotoPessoa
 {
     #[ORM\Id]
-    #[ORM\Column(name: 'ft_id', type: 'integer', nullable: false)]
+    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Pessoa::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'pes_id', nullable: false)]
+    #[ORM\JoinColumn(name: 'pes_id', referencedColumnName: 'id', nullable: false)]
     private Pessoa $pessoa;
 
     #[ORM\Column(name: 'ft_data', type: 'datetime', nullable: true) ]
